@@ -22,7 +22,7 @@ class InstagramBot:
             )
             login_button.click()
         except:
-            print('já estamos na página de login')
+            print('Já estamos na página de login.')
             pass
         user_element = driver.find_element_by_xpath(
             "//input[@name='username']")
@@ -38,41 +38,41 @@ class InstagramBot:
         password_element.send_keys(Keys.RETURN)
         time.sleep(random.randint(4, 6))
         self.curtir_fotos_com_a_hastag(
-            "hashtag"
-        )  # Altere aqui para a hashtag que você deseja usar.
+            "coloque a hashtag aqui"
+        )  # Altere aqui para a hashtag que você deseja usar. Lista: (...).
 
     @staticmethod
     def type_like_a_person(sentence, single_input_field):
         """ Este código irá basicamente permitir que você simule a digitação como uma pessoa """
-        print("going to start typing message into message share text area")
+        print("Going to start typing message into message share text area.")
         for letter in sentence:
             single_input_field.send_keys(letter)
             time.sleep(random.randint(1, 5) / 30)
 
     def curtir_fotos_com_a_hastag(self, hashtag):
         driver = self.driver
-        driver.get("https://www.instagram.com/explore/tags/"hashtag"/")
+        driver.get("https://www.instagram.com/explore/tags/computação/")
         time.sleep(5)
+        n = 0
         for i in range(
-            1, 3
+            1, 5
         ):  # Altere o segundo valor aqui para que ele desça a quantidade de páginas que você quiser: quer que ele desça 5 páginas então você deve alterar de range(1,3) para range(1,5)
             driver.execute_script(
                 "window.scrollTo(0, document.body.scrollHeight);")
             time.sleep(3)
         hrefs = driver.find_elements_by_tag_name("a")
         pic_hrefs = [elem.get_attribute("href") for elem in hrefs]
-        print(hashtag + " fotos: " + str(len(pic_hrefs)))
+        print("A busca da hashtag '" + hashtag + "' retornou um total de " + str(len(pic_hrefs)) + " fotos.")
         testes = [
             href
             for href in pic_hrefs
             if hashtag in href and href.index("https://www.instagram.com/p") != -1
         ]
-
         for pic_href in pic_hrefs:
             try:
                 pic_href.index("https://www.instagram.com/p")
             except ValueError as err:
-                print("pulando link inválido")
+                print("Pulando link inválido.")
                 continue
             driver.get(pic_href)
             driver.execute_script(
@@ -80,6 +80,8 @@ class InstagramBot:
             try:
                 driver.find_element_by_xpath(
                     '//span[@class="fr66n"]').click()
+                n = n + 1
+                print(f"A quantidade de fotos curtidas foi: {n}.")
                 time.sleep(random.randint(19, 23))
             except Exception as e:
                 print(e)
@@ -87,6 +89,6 @@ class InstagramBot:
 
 
 lucasBot = InstagramBot(
-    "username", "password**"
+    "username", "password"
 )  # Entre com o usuário e senha aqui
 lucasBot.login()
