@@ -10,7 +10,7 @@ class InstagramBot:
         self.password = password
         self.driver = webdriver.Firefox(
             executable_path=r"./geckodriver.exe"
-        )  # Coloque o caminho para o seu geckodriver aqui
+        )  # Coloque o caminho para o seu geckodriver aqui.
 
     def login(self):
         driver = self.driver
@@ -55,8 +55,8 @@ class InstagramBot:
         time.sleep(5)
         n = 0
         for i in range(
-            1, 5
-        ):  # Altere o segundo valor aqui para que ele desça a quantidade de páginas que você quiser: quer que ele desça 5 páginas então você deve alterar de range(1,3) para range(1,5)
+            1, 3
+        ):  # Altere o segundo valor aqui para que ele desça a quantidade de páginas que você quiser: quer que ele desça 5 páginas então você deve alterar de range(1,3) para range(1,5).
             driver.execute_script(
                 "window.scrollTo(0, document.body.scrollHeight);")
             time.sleep(3)
@@ -72,7 +72,9 @@ class InstagramBot:
             try:
                 pic_href.index("https://www.instagram.com/p")
             except ValueError as err:
-                print("Pulando link inválido.")
+                print("Link inválido, fechando o programa.")
+                driver.quit()
+                print(f"{n} fotos foram curtidas, fechando o programa.")
                 continue
             driver.get(pic_href)
             driver.execute_script(
@@ -82,6 +84,14 @@ class InstagramBot:
                     '//span[@class="fr66n"]').click()
                 n = n + 1
                 print(f"A quantidade de fotos curtidas foi: {n}.")
+                if n == 50: #coloque aqui o número limite de fotos que o programa deve curtir antes de fechar automaticamente o navegador.
+                    try:
+                        print(f"{n} fotos foram curtidas, fechando o programa.")
+                        driver.quit()
+                    except:
+                        pass
+                else:
+                    pass
                 time.sleep(random.randint(19, 23))
             except Exception as e:
                 print(e)
@@ -90,5 +100,5 @@ class InstagramBot:
 
 lucasBot = InstagramBot(
     "username", "password"
-)  # Entre com o usuário e senha aqui
+)  # Entre com o usuário e senha aqui.
 lucasBot.login()
